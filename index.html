@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cubi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+    <canvas id="gameCanvas"></canvas>
+
+    <button id="settingsButton">⚙</button>
+    <div id="settingsMenu">
+        
+        <h2>Ajustes</h2>
+
+<div class="setting">
+
+    <span>Visión</span>
+
+    <button id="visionMenos">-</button>
+
+    <span id="visionValor">1.0</span>
+
+    <button id="visionMas">+</button>
+
+</div>
+
+<div class="setting">
+
+    <span>Joystick</span>
+
+    <button id="joystickMenos">-</button>
+
+    <span id="joystickValor">1.0</span>
+
+    <button id="joystickMas">+</button>
+
+</div>
+<div class="setting">
+
+    <span>Opacidad</span>
+
+    <button id="opacidadMenos">-</button>
+
+    <span id="opacidadValor">1.0</span>
+
+    <button id="opacidadMas">+</button>
+
+</div>
+<div class="setting">
+
+    <span>Diálogos</span>
+
+    <button id="dialogoMenos">-</button>
+
+    <span id="dialogoValor">1.0</span>
+
+    <button id="dialogoMas">+</button>
+
+</div>
+
+<div class="setting">
+
+    <span>HIU</span>
+
+    <button id="hiuMenos">-</button>
+
+    <span id="hiuValor">1.0</span>
+
+    <button id="hiuMas">+</button>
+
+</div>
+
+<div class="settingRow">
+
+    <span>Pantalla completa</span>
+
+    <button id="fullscreenButton">
+        Activar
+    </button>
+
+</div>
+<div class="setting">
+
+    <button id="resetSettingsButton">
+        Restaurar ajustes
+    </button>
+
+</div>
+
+</div>
+
+    <div id="bossBars"></div>
+
+</div>
+    <div id="bossBars"></div>
+</div>
+
+<div id="flashScreen"></div>
+
+<div id="victoryText">
+    ¡EN HORABUENA!
+</div>
+
+        <div id="playerLives">
+            <div class="life"></div>
+            <div class="life"></div>
+            <div class="life"></div>
+        </div>
+        <div id="warningMessage">Necesitas la llave del jefe</div>
+        <div id="warningMessage2"><img src="https://img.icons8.com/ios-filled/50/ffffff/hand-cursor.png"></div>
+            <div id="checkpointText">
+    Punto de control activado
+</div>
+<div id="itemText"></div>
+        <div id="joystick">
+    <div id="stick"></div>
+</div>
+<button id="attackButton" class="attack-control button">
+    <img src="https://img.icons8.com/?size=100&id=Za75IlSNETEC&format=png&color=000000" alt="attack">
+</button>
+
+<button id="grabButton" class="grab-control button">
+    <img src="https://img.icons8.com/ios-filled/50/ffffff/hand-cursor.png" alt="Grab">
+</button>
+
+<button id="playerMenuButton" class="player-menu-control">
+
+    <img src="https://img.icons8.com/?size=100&id=7819&format=png&color=FFFFFF">
+
+</button>
+
+<div id="playerMenu">
+    <div id="playerSidebar">
+
+        <button class="playerTab active" data-tab="status">
+            <img src="https://img.icons8.com/?size=100&id=15277&format=png&color=FFFFFF">
+        </button>
+
+        <button class="playerTab" data-tab="items">
+            <img src="https://img.icons8.com/?size=100&id=10539&format=png&color=FFFFFF">
+        </button>
+
+        <button class="playerTab" data-tab="equipment">
+            <img src="https://img.icons8.com/?size=100&id=59335&format=png&color=FFFFFF">
+        </button>
+
+    </div>
+
+    <div id="playerStatus"></div>
+    <div id="statusTab" class="tabContent">
+        
+
+    <div id="statusPanel">
+
+        <div id="leftStats">
+
+            <div class="statRow">
+                <span class="statValue" id="statLives">3 / 3</span>
+                <span class="statLabel">VIDAS</span>
+            </div>
+
+            <div class="statRow">
+                <span class="statValue" id="statKeys">0</span>
+                <span class="statLabel">LLAVES</span>
+            </div>
+
+            <div class="statRow">
+                <span class="statValue" id="statMasterKey">NO</span>
+                <span class="statLabel">LLAVE JEFE</span>
+            </div>
+
+            <div class="statRow">
+                <span class="statValue" id="statCheckpoint">NINGUNO</span>
+                <span class="statLabel">GUARDADO</span>
+            </div>
+
+        </div>
+
+        <div id="characterPanel">
+
+            <div id="characterCircle">
+
+                <img id="playerCube" src="https://img.icons8.com/?size=100&id=jYPNa01UgGvn&format=png&color=FA5252">
+
+<div class="equipSlot slotarma">
+    <img id="weaponIcon" src="https://img.icons8.com/ios-filled/50/ffffff/sword.png">
+</div>
+
+<div class="equipSlot slotvidas">
+    <img id="livesIcon" src="https://img.icons8.com/?size=100&id=114008&format=png&color=000000">
+</div>
+
+<div class="equipSlot slotprotec">
+    <img id="armorIcon" src="armadura.png">
+</div>
+
+<div class="equipSlot slotllaves">
+    <img id="keysIcon" src="https://img.icons8.com/ios-filled/50/ffffff/key.png">
+</div>
+
+<div class="equipSlot slot6"></div>
+
+<div class="equipSlot slotllaveMaestra">
+    <img id="masterKeyIcon" src="https://img.icons8.com/?size=100&id=7wzJJ5uOWmzN&format=png&color=FFFFFF">
+</div>
+
+<div class="equipSlot slot8"></div>
+
+<div class="equipSlot slotguardado">
+    <img id="checkpointIcon" src="https://img.icons8.com/?size=100&id=48477&format=png&color=FFFFFF">
+</div>
+
+            </div>
+
+        </div>
+
+        <div id="rightStats">
+
+            <div class="statRow">
+                <span class="statValue" id="statWeapon">NINGUNA</span>
+                <span class="statLabel">ARMA</span>
+            </div>
+
+            <div class="statRow">
+                <span class="statValue">NINGUNA</span>
+                <span class="statLabel">ARMADURA</span>
+            </div>
+
+            <div class="statRow">
+                <span class="statValue">_______</span>
+                <span class="statLabel">_______</span>
+            </div>
+
+            <div class="statRow">
+                <span class="statValue">______</span>
+                <span class="statLabel">______</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div id="itemsTab" class="tabContent" style="display:none;">
+
+
+    <div id="itemsList"></div>
+
+    <div id="itemDescription" style="display:none;"></div>
+
+</div>
+
+<div id="equipmentTab" class="tabContent" style="display:none;">
+
+    <div id="equipmentList"></div>
+
+</div>
+
+    </div>
+    </div>
+    
+    <div id="equipmentInfo">
+
+    <div id="equipmentInfoContent">
+
+        <div id="equipmentInfoTitle"></div>
+
+        <div id="equipmentInfoImage"></div>
+
+        <div id="equipmentInfoText"></div>
+
+    </div>
+
+</div>
+
+
+        <div id="dialogBox">
+        
+    <img id="dialogPortrait" src="boss.png">
+
+    <div id="dialogContent">
+        
+        <div id="dialogNameFantasma"></div>
+
+        <div id="dialogNameBoss"></div>
+
+        <div id="dialogText"></div>
+
+    </div>
+    <audio id="dialogBeep" src="audio/bip.mp3" preload="auto"></audio>
+
+    <script src="textures.js"></script>
+    <script src="decorations.js"></script>
+    <script src="controles.js"></script>
+    <script src="player.js"></script>
+    <script src="fantasma.js"></script>
+    <script src="bossPhases.js"></script>
+    <script src="boss.js"></script>
+    <script src="estructuras.js"></script>
+    <script src="bossAttacks.js"></script>
+    <script src="bossBar.js"></script>
+    <script src="habitaciones.js"></script>
+    <script src="salasJefe.js"></script>
+    <script src="ajustes.js"></script>
+    <script src="consejo.js"></script>
+    <script src="menuEstado.js"></script>
+    <script src="dialogos.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
+
