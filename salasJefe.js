@@ -43,31 +43,6 @@ objects:[
 createDoor({
 
         x:640,
-        y:20,
-
-        tileSize:120,
-        lockedTexture:
-           "doorLocked",
-        closedTexture:
-            "door",
-        openTexture:
-            "dooropen",
-        type:"door",
-
-        closedSize:{
-            width:120,
-            height:60
-        },
-
-        openSize:{
-            width:20,
-            height:60
-        }
-
-    }),
-createDoor({
-
-        x:640,
         y:720,
 
         tileSize:120,
