@@ -1,4 +1,3 @@
-
 const images = {};
 
 function loadImage(path){
@@ -14,10 +13,9 @@ function loadImage(path){
     images[path] = img;
 
 }
+
 const textures = {
 
-    player:
-        "textures/player.png",
     stonea:
         "textures/stonea.png",
     stone:
@@ -31,7 +29,25 @@ const textures = {
     fireball:
         "textures/fireball.png",
     skull:
-        "textures/skull.png"
+        "textures/skull.png",
+        
+    box:
+        "textures/box.png",
+    door:
+        "textures/door.png",
+    dooropen:
+        "textures/dooropen.png",
+    doorLocked:
+        "textures/doorLocked.png",
+    doorLockedA:
+        "textures/doorLockedA.png",
+    doorblok:
+        "textures/doorblok.png",
+
+    sword:
+        "textures/sword.png",
+    key:
+        "textures/key.png"
 
 };
 function loadTextures(){
