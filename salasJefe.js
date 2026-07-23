@@ -6,10 +6,10 @@ height:800,
 fightArea:{  
 
 left:250,  
-top:70,  
+top:80,  
 
 right:900,  
-bottom:680
+bottom:660
 
 },
 
@@ -40,8 +40,57 @@ platforms: [
 ],
 
 objects:[
-{ x: 640, y: 740, width: 120, height:40, color:"#663300", type:"door"},  
-{ x: 640, y: 20, width: 120, height:40, color:"#663300", type:"door"}
+createDoor({
+
+        x:640,
+        y:20,
+
+        tileSize:120,
+        lockedTexture:
+           "doorLocked",
+        closedTexture:
+            "door",
+        openTexture:
+            "dooropen",
+        type:"door",
+
+        closedSize:{
+            width:120,
+            height:60
+        },
+
+        openSize:{
+            width:20,
+            height:60
+        }
+
+    }),
+createDoor({
+
+        x:640,
+        y:720,
+
+        tileSize:120,
+        lockedTexture:
+           "doorLocked",
+        closedTexture:
+            "door",
+        openTexture:
+            "dooropen",
+        type:"door",
+
+        closedSize:{
+            width:120,
+            height:60
+        },
+
+        openSize:{
+            width:20,
+            height:60
+        }
+
+    }) 
+
 
 ],
 boxes: [],
@@ -52,22 +101,26 @@ doors: [
 
 {  
     x: 640,  
-    y: 740,  
+    y: 720,  
     width: 120,  
-    height: 40,  
+    height: 60,  
     type: "bossDoor",  
     active: false,  
-    color: "#663300"  
+    
+    tileSize:120,
+    texture:"doorblok"
 },  
 
 {  
     x: 640,  
     y: 20,  
     width: 120,  
-    height: 40,  
+    height: 60,  
     type: "bossDoor",  
     active: false,  
-    color: "#663300"  
+    
+    tileSize:120,
+    texture:"doorblok"
 }
 
 ]
@@ -81,10 +134,10 @@ height:800,
 fightArea:{  
 
 left:250,  
-top:70,  
+top:80,  
 
 right:900,  
-bottom:680
+bottom:660
 
 },
 
@@ -122,10 +175,62 @@ platforms: [
 ],
 
 objects:[
-{ x: 640, y: 740, width: 120, height:40, color:"#663300", type:"door"},  
-{ x: 640, y: 20, width: 120, height:40, color:"#663300", type:"door"}
+createDoor({
+
+        x:640,
+        y:20,
+
+        tileSize:120,
+
+        closedTexture:
+            "door",
+        lockedTexture:
+           "doorLocked",
+        openTexture:
+            "dooropen",
+        type:"door",
+
+        closedSize:{
+            width:120,
+            height:60
+        },
+
+        openSize:{
+            width:20,
+            height:60
+        }
+
+    }),
+createDoor({
+
+        x:640,
+        y:720,
+
+        tileSize:120,
+
+        closedTexture:
+            "door",
+        lockedTexture:
+           "doorLocked",
+        openTexture:
+            "dooropen",
+        type:"door",
+
+        closedSize:{
+            width:120,
+            height:60
+        },
+
+        openSize:{
+            width:20,
+            height:60
+        }
+
+    }) 
+
 
 ],
+
 boxes: [],
 
 decorations:[],
@@ -134,22 +239,26 @@ doors: [
 
 {  
     x: 640,  
-    y: 740,  
+    y: 720,  
     width: 120,  
-    height: 40,  
+    height: 60,  
     type: "bossDoor",  
     active: false,  
-    color: "#663300"  
+    
+    tileSize:120,
+    texture:"doorblok"
 },  
 
 {  
     x: 640,  
     y: 20,  
     width: 120,  
-    height: 40,  
+    height: 60,  
     type: "bossDoor",  
     active: false,  
-    color: "#663300"  
+    
+    tileSize:120,
+    texture:"doorblok"
 }
 
 ]
@@ -321,32 +430,79 @@ return room.bosses.some(data=>{
 
 function drawBossDoors(){
 
-bossRooms.forEach(room=>{  
+    bossRooms.forEach(room=>{
 
-    room.doors.forEach(door=>{  
+        room.doors.forEach(door=>{
 
-        if(  
-            door.type !== "bossDoor"  
-        ) return;  
+            if(
+                door.type !==
+                "bossDoor"
+            ){
+                return;
+            }
 
-        if(!door.active) return;  
+            if(
+                !door.active
+            ){
+                return;
+            }
 
-        context.fillStyle =  
-            door.color;  
+            if(
+                door.texture
+            ){
 
-        context.fillRect(  
+                const img =
 
-            door.x - camera.x,  
-            door.y - camera.y,  
+                    images[
+                        textures[
+                            door.texture
+                        ]
+                    ];
 
-            door.width,  
-            door.height  
+                if(img){
 
-        );  
+                    context.drawImage(
 
-    });  
+                        img,
 
-});
+                        door.x -
+                        camera.x,
+
+                        door.y -
+                        camera.y,
+
+                        door.width,
+
+                        door.height
+
+                    );
+
+                    return;
+
+                }
+
+            }
+
+            context.fillStyle =
+                door.color;
+
+            context.fillRect(
+
+                door.x -
+                camera.x,
+
+                door.y -
+                camera.y,
+
+                door.width,
+
+                door.height
+
+            );
+
+        });
+
+    });
 
 }
 
@@ -563,4 +719,4 @@ function updateBossRoom(room) {
 
     }
 
-}
+  }
