@@ -1,15 +1,86 @@
-const platforms = [{ x: 0, y: 0, width: 200, height: 40, 
-    texture:"stone",
-    tileSize:40
-}];
+const platforms = []
 
 const objects = [
-        { x: 70, y: 90, width: 30, height: 30, color: 'yellow', type: 'key' },
-        { x: 100, y: 90, width: 30, height: 30, color: 'yellow', type: 'key' },
-    { x: 20, y: 30, width: 30, height: 30, color: '#7AE1FF', type: 'sword' }
+    { x: 70, y: 100, width: 30, height: 30, 
+    texture:"key",
+    tileSize:30, type: 'key' },
+    { x: 100, y: 100, width: 30, height: 30, 
+    texture:"key",
+    tileSize:30, type: 'key' },
+    { x: 20, y: 100, width: 50, height: 50, 
+    texture:"sword",
+    tileSize:50, type: 'sword' },
+    
+createDoor({
+
+        x:240,
+        y:320,
+
+        tileSize:120,
+
+        lockedTexture:
+           "dooropen",
+
+        closedTexture:
+            "dooropen",
+
+        openTexture:
+            "door",
+
+        type:"door",
+        
+        unlocked:true,
+        closedSize:{
+
+            width:40,
+            height:120
+
+        },
+
+        openSize:{
+
+            width:80,
+            height:30
+
+        }
+}),
+
+createDoor({
+
+        x:240,
+        y:220,
+
+        tileSize:120,
+        
+        lockedTexture:
+           "doorLocked",
+
+        closedTexture:
+            "door",
+        openTexture:
+            "dooropen",
+        type:"door",
+unlocked:false,
+        closedSize:{
+            width:120,
+            height:60
+        },
+
+        openSize:{
+            width:20,
+            height:80
+        }
+
+    })
+
+
 ]
 
-const boxes = [{ x: 80, y: 40, width: 50, height: 50, color: 'blue', grabRange: 20 }];
+const boxes = [
+    { x: 80, y: 40, width: 60, height: 60, 
+    texture:"box",
+    tileSize:60, grabRange: 20 }
+]
 
 function drawPlatforms(){
 
@@ -100,12 +171,7 @@ function drawObjects(){
 
     objects.forEach(object=>{
 
-        if(
-            object.type === "door" &&
-            object.opened
-        ){
-            return;
-        }
+
 
         if(
             !dentroDeVision(object)
@@ -191,16 +257,102 @@ const tileHeight =
 
 }
 
-function drawBoxes() {
-        boxes.forEach(box => {
+function drawBoxes(){
 
-    if (dentroDeVision(box)){
+    boxes.forEach(box=>{
+
+        if(
+            !dentroDeVision(box)
+        ){
+            return;
+        }
+
+        if(box.texture){
+
+            const img =
+
+                images[
+                    textures[
+                        box.texture
+                    ]
+                ];
+
+            if(img){
+
+                const tileWidth =
+                    box.tileWidth ??
+                    box.tileSize ??
+                    50;
+
+                const tileHeight =
+                    box.tileHeight ??
+                    box.tileSize ??
+                    50;
+
+                for(
+
+                    let x = 0;
+
+                    x < box.width;
+
+                    x += tileWidth
+
+                ){
+
+                    for(
+
+                        let y = 0;
+
+                        y < box.height;
+
+                        y += tileHeight
+
+                    ){
+
+                        const drawWidth =
+                            Math.min(
+                                tileWidth,
+                                box.width - x
+                            );
+
+                        const drawHeight =
+                            Math.min(
+                                tileHeight,
+                                box.height - y
+                            );
+
+                        context.drawImage(
+
+                            img,
+
+                            box.x -
+                            camera.x +
+                            x,
+
+                            box.y -
+                            camera.y +
+                            y,
+
+                            drawWidth,
+
+                            drawHeight
+
+                        );
+
+                    }
+
+                }
+
+                return;
+
+            }
+
+        }
 
         drawEntity(box);
 
-    }
+    });
 
-});
 }
 
 function collectKey(index) {
@@ -229,17 +381,6 @@ function collectMasterKey(index) {
 
 }
 
-function openDoor(index) {
-
-    if (keys <= 0) {
-        return;
-    }
-
-    keys--;
-
-    objects.splice(index, 1);
-
-}
 
 function collectSword(index) {
 
@@ -272,62 +413,354 @@ function activateCheckpoint(object) {
 
 }
 
-function moveBox(box) {
+function moveBox(box){
 
-    const prevX = box.x;
-    const prevY = box.y;
+    const prevX =
+        box.x;
 
-    box.x += joystickState.x * player.speed;
-    box.y += joystickState.y * player.speed;
+    box.x +=
+        joystickState.x *
+        player.speed;
 
-    for (const platform of platforms) {
-
-        if (checkCollision(box, platform)) {
-
-            box.x = prevX;
-            box.y = prevY;
-            return;
-
-        }
-
-    }
-
-    for (const otherBox of boxes) {
-
-        if (
-            otherBox !== box &&
-            checkCollision(box, otherBox)
-        ) {
-
-            box.x = prevX;
-            box.y = prevY;
-            return;
-
-        }
-
-    }
-
-    if (checkCollision(box, player)) {
-
+    if(
+        boxCollides(box)
+    ){
         box.x = prevX;
-        box.y = prevY;
+    }
 
+    const prevY =
+        box.y;
+
+    box.y +=
+        joystickState.y *
+        player.speed;
+
+    if(
+        boxCollides(box)
+    ){
+        box.y = prevY;
     }
 
 }
-function updateGrab() {
 
-    if (!grabbing) {
+function boxCollides(box){
+
+    for(
+        const platform of platforms
+    ){
+
+        if(
+            checkCollision(
+                box,
+                platform
+            )
+        ){
+            return true;
+        }
+
+    }
+
+    for(
+        const otherBox of boxes
+    ){
+
+        if(
+            otherBox !== box &&
+            checkCollision(
+                box,
+                otherBox
+            )
+        ){
+            return true;
+        }
+
+    }
+
+    // puertas cerradas
+    for(
+        const object of objects
+    ){
+
+        if(
+            object.type === "door" &&
+            !object.opened &&
+            checkCollision(
+                box,
+                object
+            )
+        ){
+            return true;
+        }
+
+    }
+
+    for(
+        const room of bossRooms
+    ){
+
+        if(
+            !room.doors
+        ) continue;
+
+        for(
+            const door of room.doors
+        ){
+
+            if(
+                door.active &&
+                checkCollision(
+                    box,
+                    door
+                )
+            ){
+                return true;
+            }
+
+        }
+
+    }
+
+    return false;
+
+}
+
+function updateGrab(){
+
+    if(!grabbing){
+
+        doorPressed =
+            false;
+
         return;
     }
 
+    // ===== CAJAS =====
+
     const box =
+
         boxes.find(
-            box => isNear(player, box)
+            box =>
+                isNear(
+                    player,
+                    box,
+                    80
+                )
         );
 
-    if (box) {
+    if(box){
+
         moveBox(box);
+
+        return;
+
+    }
+
+    // ===== PUERTAS =====
+
+    if(
+        doorPressed
+    ){
+        return;
+    }
+
+    const door =
+
+        objects.find(
+            object =>
+
+                object.type ===
+                "door"
+
+                &&
+
+                object.unlocked
+
+                &&
+
+                isNear(
+                    player,
+                    object,
+                    120
+                )
+
+        );
+
+    if(door){
+
+        doorPressed =
+            true;
+
+        toggleDoor(
+            door
+        );
+
     }
 
 }
+
+function toggleDoor(
+    door
+){
+
+if(
+    !door.unlocked
+){
+
+    if(
+        keys <= 0
+    ){
+        return;
+    }
+
+    keys--;
+
+    door.unlocked = true;
+
+    door.texture =
+        door.closedTexture;
+}
+
+    // ===== CERRAR =====
+
+    if(
+        door.opened
+    ){
+
+        door.width =
+            door.closedSize.width;
+
+        door.height =
+            door.closedSize.height;
+
+        door.texture =
+            door.closedTexture;
+
+        door.opened =
+            false;
+
+    }
+
+    // ===== ABRIR =====
+
+    else{
+
+        door.width =
+            door.openSize.width;
+
+        door.height =
+            door.openSize.height;
+
+        door.texture =
+            door.openTexture;
+
+        door.opened =
+            true;
+
+    }
+
+    // ===== EVITAR ATRAPAR AL JUGADOR =====
+
+    if(
+        playerInsideDoor(
+            door
+        )
+    ){
+
+        // Vertical
+        if(
+            door.height >
+            door.width
+        ){
+
+            if(
+                player.x <
+                door.x
+            ){
+
+                player.x =
+                    door.x -
+                    player.width -
+                    10;
+
+            }
+            else{
+
+                player.x =
+                    door.x +
+                    door.width +
+                    10;
+
+            }
+
+        }
+
+        // Horizontal
+        else{
+
+            if(
+                player.y <
+                door.y
+            ){
+
+                player.y =
+                    door.y -
+                    player.height -
+                    10;
+
+            }
+            else{
+
+                player.y =
+                    door.y +
+                    door.height +
+                    10;
+
+            }
+
+        }
+
+    }
+
+}
+
+function playerInsideDoor(
+    door
+){
+
+    return checkCollision(
+        player,
+        door
+    );
+
+}
+
+function createDoor(data){
+
+    return {
+
+        type:"door",
+
+        unlocked:
+            data.unlocked ?? false,
+
+        autoOpen:
+            data.autoOpen ?? false,
+
+        opened:false,
+
+        ...data,
+
+        width:
+            data.closedSize.width,
+
+        height:
+            data.closedSize.height,
+
+        texture:
+            data.lockedTexture ??
+            data.closedTexture
+
+    };
+
+            }
+                    
